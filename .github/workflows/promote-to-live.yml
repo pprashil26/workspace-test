@@ -1,0 +1,42 @@
+name: Promote to Live
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Test Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout Live Repository
+        uses: actions/checkout@v4
+        with:
+          repository: pprashil26/workspace
+          token: ${{ secrets.LIVE_REPO_TOKEN }}
+          path: live
+
+      - name: Promote Approved Version
+        run: |
+          cp index.html live/index.html
+
+      - name: Commit and Push to Live
+        working-directory: live
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add index.html
+
+          if git diff --cached --quiet; then
+            echo "No changes to promote."
+            exit 0
+          fi
+
+          git commit -m "Promote tested version to live"
+          git push
