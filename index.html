@@ -38,6 +38,7 @@ body{height:100vh;height:100dvh;overflow:hidden}.shell{height:calc(100vh - 24px)
 .task-toolbar .chip.active,.task-toolbar .filter.active{background:transparent!important;color:var(--ink)!important;font-weight:700!important;text-decoration:underline!important;text-underline-offset:3px!important}
 .task-toolbar .count{margin-left:1px!important;font-size:8px!important;font-weight:500!important;opacity:.68}
 }
+.quick-note{position:fixed;right:12px;bottom:60px;width:280px;background:#fff;border:1px solid #dfe4df;border-radius:12px;box-shadow:0 10px 26px rgba(46,57,50,.08);z-index:90}.quick-note-head{display:flex;justify-content:space-between;padding:6px 8px;border-bottom:1px solid #dfe4df;font-size:11px;font-weight:700}.quick-note textarea{width:100%;height:120px;border:0;resize:none;padding:8px}.quick-note.collapsed textarea{display:none}@media(max-width:759px){.quick-note{left:6px;right:6px;bottom:48px;width:auto}.quick-note textarea{height:90px}}
 </style>
 </head>
 <body>
@@ -125,8 +126,11 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{app.view=b.dataset.v
 function dateText(){return new Date().toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'})}
 function timeText(){return new Date().toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})}
 document.addEventListener('keydown',e=>{const tag=(e.target&&e.target.tagName||'').toLowerCase();const typing=['input','textarea','select'].includes(tag);if(e.key==='/'&&!typing){e.preventDefault();$('searchInput').focus();$('searchInput').select();return;}if(typing){if(e.code==='KeyD'&&e.altKey&&e.shiftKey){e.preventDefault();insertAtCursor(e.target,dateText()+' '+timeText());return;}if(e.code==='KeyT'&&e.altKey&&e.shiftKey){e.preventDefault();insertAtCursor(e.target,timeText());return;}if(e.code==='KeyD'&&e.altKey&&!e.shiftKey){e.preventDefault();insertAtCursor(e.target,dateText());return;}return;}if(e.key==='t'||e.key==='T'){if(document.querySelector('.modal.open'))return;e.preventDefault();openTask();return;}if(e.key==='n'||e.key==='N'){if(document.querySelector('.modal.open'))return;e.preventDefault();openNote();return;}if(e.code==='KeyC'&&e.shiftKey){if(document.querySelector('.modal.open'))return;e.preventDefault();openTodayJournal();return;}if(e.code==='KeyC'&&!e.shiftKey){if(document.querySelector('.modal.open'))return;e.preventDefault();openJournal();return;}if(e.key==='1'){e.preventDefault();app.view='tasks';persist();render();return;}if(e.key==='2'){e.preventDefault();app.view='notes';persist();render();return;}});
-buildTimeOptions();load();render();updateRestoreButton();
+buildTimeOptions();load();render();updateRestoreButton();initQuickNote();
+
+const QUICK_KEY='worktasks:quicknote';
+function initQuickNote(){const box=$('quickNote'),btn=$('quickNoteToggle'),txt=$('quickNoteText');if(!box)return;txt.value=localStorage.getItem(QUICK_KEY)||'';txt.addEventListener('input',()=>localStorage.setItem(QUICK_KEY,txt.value));btn.onclick=()=>{box.classList.toggle('collapsed');btn.textContent=box.classList.contains('collapsed')?'▲':'▼';};}
 })();
 </script>
-</body>
+<div id="quickNote" class="quick-note collapsed"><div class="quick-note-head"><span>Quick Note</span><button id="quickNoteToggle" class="plain-btn">▲</button></div><textarea id="quickNoteText" placeholder="Quick capture..."></textarea></div></body>
 </html>
