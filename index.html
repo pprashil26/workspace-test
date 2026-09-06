@@ -38,7 +38,23 @@ body{height:100vh;height:100dvh;overflow:hidden}.shell{height:calc(100vh - 24px)
 .task-toolbar .chip.active,.task-toolbar .filter.active{background:transparent!important;color:var(--ink)!important;font-weight:700!important;text-decoration:underline!important;text-underline-offset:3px!important}
 .task-toolbar .count{margin-left:1px!important;font-size:8px!important;font-weight:500!important;opacity:.68}
 }
-.quick-note{position:fixed;right:12px;bottom:60px;width:280px;background:#fff;border:1px solid #dfe4df;border-radius:12px;box-shadow:0 10px 26px rgba(46,57,50,.08);z-index:90}.quick-note-head{display:flex;justify-content:space-between;padding:6px 8px;border-bottom:1px solid #dfe4df;font-size:11px;font-weight:700}.quick-note textarea{width:100%;height:120px;border:0;resize:none;padding:8px}.quick-note.collapsed textarea{display:none}@media(max-width:759px){.quick-note{left:6px;right:6px;bottom:48px;width:auto}.quick-note textarea{height:90px}}
+
+/* Desktop-only persistent sticky note panel */
+.sticky-note-panel{display:none}
+@media(min-width:1000px){
+body{padding-right:284px}
+.shell{margin-left:auto;margin-right:auto}
+.sticky-note-panel{position:fixed;top:12px;right:12px;bottom:12px;z-index:80;display:flex;flex-direction:column;width:260px;border:1px solid #d8c76e;border-radius:14px;background:#fffdf2;box-shadow:var(--shadow);overflow:hidden}
+.sticky-note-panel.collapsed{bottom:auto;width:44px;height:40px}
+.sticky-note-head{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:40px;padding:4px 6px 4px 10px;border-bottom:1px solid #eadf9e;background:#fff8cf}
+.sticky-note-title{font-size:11px;font-weight:750;color:#5b5125;white-space:nowrap}
+.sticky-note-toggle{flex:0 0 auto;width:30px;height:30px;min-height:30px;border:0;border-radius:8px;background:transparent;color:#746a38}
+.sticky-note-toggle:hover{background:rgba(216,199,110,.2)}
+.sticky-note-panel.collapsed .sticky-note-title,.sticky-note-panel.collapsed .sticky-note-body{display:none}
+.sticky-note-body{flex:1;min-height:0;display:flex;flex-direction:column}
+.sticky-note-text{flex:1;width:100%;min-height:0;padding:10px;border:0;outline:0;resize:none;background:#fffdf2;color:var(--ink);font:13px/1.55 inherit}
+.sticky-note-status{padding:4px 9px;border-top:1px solid #eee5b6;color:#92885a;font-size:9.5px;text-align:right}
+}
 </style>
 </head>
 <body>
@@ -126,11 +142,23 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{app.view=b.dataset.v
 function dateText(){return new Date().toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'})}
 function timeText(){return new Date().toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})}
 document.addEventListener('keydown',e=>{const tag=(e.target&&e.target.tagName||'').toLowerCase();const typing=['input','textarea','select'].includes(tag);if(e.key==='/'&&!typing){e.preventDefault();$('searchInput').focus();$('searchInput').select();return;}if(typing){if(e.code==='KeyD'&&e.altKey&&e.shiftKey){e.preventDefault();insertAtCursor(e.target,dateText()+' '+timeText());return;}if(e.code==='KeyT'&&e.altKey&&e.shiftKey){e.preventDefault();insertAtCursor(e.target,timeText());return;}if(e.code==='KeyD'&&e.altKey&&!e.shiftKey){e.preventDefault();insertAtCursor(e.target,dateText());return;}return;}if(e.key==='t'||e.key==='T'){if(document.querySelector('.modal.open'))return;e.preventDefault();openTask();return;}if(e.key==='n'||e.key==='N'){if(document.querySelector('.modal.open'))return;e.preventDefault();openNote();return;}if(e.code==='KeyC'&&e.shiftKey){if(document.querySelector('.modal.open'))return;e.preventDefault();openTodayJournal();return;}if(e.code==='KeyC'&&!e.shiftKey){if(document.querySelector('.modal.open'))return;e.preventDefault();openJournal();return;}if(e.key==='1'){e.preventDefault();app.view='tasks';persist();render();return;}if(e.key==='2'){e.preventDefault();app.view='notes';persist();render();return;}});
-buildTimeOptions();load();render();updateRestoreButton();initQuickNote();
+buildTimeOptions();load();render();updateRestoreButton();initStickyNote();
 
-const QUICK_KEY='worktasks:quicknote';
-function initQuickNote(){const box=$('quickNote'),btn=$('quickNoteToggle'),txt=$('quickNoteText');if(!box)return;txt.value=localStorage.getItem(QUICK_KEY)||'';txt.addEventListener('input',()=>localStorage.setItem(QUICK_KEY,txt.value));btn.onclick=()=>{box.classList.toggle('collapsed');btn.textContent=box.classList.contains('collapsed')?'▲':'▼';};}
+const STICKY_NOTE_KEY='worktasks:sticky-note';
+const STICKY_NOTE_COLLAPSED_KEY='worktasks:sticky-note-collapsed';
+function initStickyNote(){const panel=$('stickyNotePanel'),toggle=$('stickyNoteToggle'),text=$('stickyNoteText'),status=$('stickyNoteStatus');if(!panel||!toggle||!text)return;text.value=localStorage.getItem(STICKY_NOTE_KEY)||'';const applyState=()=>{const collapsed=panel.classList.contains('collapsed');toggle.textContent=collapsed?'‹':'›';toggle.setAttribute('aria-label',collapsed?'Expand sticky note':'Collapse sticky note');toggle.title=collapsed?'Expand sticky note':'Collapse sticky note'};if(localStorage.getItem(STICKY_NOTE_COLLAPSED_KEY)==='true')panel.classList.add('collapsed');applyState();toggle.onclick=()=>{panel.classList.toggle('collapsed');localStorage.setItem(STICKY_NOTE_COLLAPSED_KEY,String(panel.classList.contains('collapsed')));applyState();if(!panel.classList.contains('collapsed'))text.focus()};text.addEventListener('input',()=>{localStorage.setItem(STICKY_NOTE_KEY,text.value);if(status){status.textContent='Saved locally';clearTimeout(status._timer);status._timer=setTimeout(()=>status.textContent='Saved locally',900)}})}
 })();
 </script>
-<div id="quickNote" class="quick-note collapsed"><div class="quick-note-head"><span>Quick Note</span><button id="quickNoteToggle" class="plain-btn">▲</button></div><textarea id="quickNoteText" placeholder="Quick capture..."></textarea></div></body>
+
+<aside class="sticky-note-panel" id="stickyNotePanel" aria-label="Sticky note">
+  <div class="sticky-note-head">
+    <span class="sticky-note-title">Sticky Note</span>
+    <button class="sticky-note-toggle" id="stickyNoteToggle" type="button" aria-label="Collapse sticky note" title="Collapse sticky note">›</button>
+  </div>
+  <div class="sticky-note-body">
+    <textarea class="sticky-note-text" id="stickyNoteText" placeholder="Temporary reminders and reference notes..." aria-label="Sticky note text"></textarea>
+    <div class="sticky-note-status" id="stickyNoteStatus">Saved locally</div>
+  </div>
+</aside>
+</body>
 </html>
