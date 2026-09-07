@@ -69,6 +69,13 @@ body{padding-right:284px}
 
 @media(max-width:999px){.mobile-sticky-btn{display:inline-flex!important;align-items:center;justify-content:center;background:#fff4c7!important;border:1px solid #eadb8c!important;border-radius:8px!important;color:#6b5f25!important;font-weight:700!important;flex:0 0 auto}.footer-actions{flex-wrap:wrap!important}.mobile-sticky-btn:hover{background:#ffefb0!important}}
 .task-note-actions{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.task-note-actions .plain-btn{min-height:28px;padding:3px 7px;font-size:11px}.task-note-linked{color:var(--muted);font-size:10.5px}@media(max-width:759px){.task-note-actions{gap:2px}.task-note-actions .plain-btn{min-height:36px;padding:5px 7px}}
+
+/* Compact Add Task scheduling and options layout */
+.task-schedule-row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 86px;gap:8px;align-items:end}
+.task-options-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap;min-height:30px}
+.task-options-row .check-line{min-height:30px;margin:0;white-space:nowrap}
+.task-estimate-field .field{text-align:center;padding-left:6px;padding-right:6px}
+@media(max-width:759px){.task-schedule-row{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) 72px;gap:5px}.task-schedule-row .field{min-width:0;padding-left:6px;padding-right:6px}.task-options-row{gap:12px}.task-options-row .check-line{font-size:12px}}
 </style>
 </head>
 <body>
@@ -93,10 +100,8 @@ body{padding-right:284px}
 <div class="field-group"><label for="taskTitle">Task</label><input class="field" id="taskTitle" maxlength="240" autocomplete="off"></div>
 <div class="field-group"><label for="taskNext">Next action <small>(optional)</small></label><input class="field" id="taskNext" maxlength="160" placeholder="What is the very next action?"></div>
 <div class="field-group"><label for="taskListSelect">List</label><select class="field" id="taskListSelect"></select></div>
-<div class="row-2"><div class="field-group"><label for="taskDate">Date <small>(optional)</small></label><input class="field" id="taskDate" type="date"></div><div class="field-group"><label for="taskTime">Time <small>(optional)</small></label><select class="field" id="taskTime"><option value="">No time</option></select></div></div>
-
-<div class="field-group"><label for="taskEstimate">Estimate Minutes <small>(optional)</small></label><input class="field" id="taskEstimate" type="number" min="0" step="5" placeholder="e.g. 30"></div>
-<label class="check-line"><input id="taskHighlight" type="checkbox"> Highlight task</label><label class="check-line"><input id="taskEvent" type="checkbox"> Event</label>
+<div class="task-schedule-row"><div class="field-group"><label for="taskDate">Date</label><input class="field" id="taskDate" type="date"></div><div class="field-group"><label for="taskTime">Time</label><select class="field" id="taskTime"><option value="">No time</option></select></div><div class="field-group task-estimate-field"><label for="taskEstimate">Est. min</label><input class="field" id="taskEstimate" type="number" min="0" step="5" inputmode="numeric" placeholder="30" aria-label="Estimate in minutes"></div></div>
+<div class="task-options-row"><label class="check-line"><input id="taskHighlight" type="checkbox"> Highlight Task</label><label class="check-line"><input id="taskEvent" type="checkbox"> Mark as Event</label></div>
 <div class="field-group"><label>Note <small>(optional)</small></label><div class="task-note-actions"><button class="plain-btn" id="createTaskNoteBtn" type="button">Create note</button><button class="plain-btn" id="linkTaskNoteBtn" type="button">Link existing</button><button class="plain-btn" id="openTaskNoteBtn" type="button" hidden>Open note</button><button class="plain-btn" id="unlinkTaskNoteBtn" type="button" hidden>Unlink</button><span class="task-note-linked" id="taskNoteLinkedText">No note linked</span></div><select class="field" id="taskNoteSelect" hidden><option value="">None</option></select></div>
 </div><div class="dialog-actions"><button class="plain-btn danger" id="deleteTaskBtn">Delete</button></div></section></div>
 
