@@ -67,7 +67,7 @@ body{padding-right:284px}
 .mobile-sticky-text:focus{border-color:#d8c76e;box-shadow:0 0 0 2px rgba(216,199,110,.2)}
 }
 
-@media(max-width:999px){.mobile-sticky-btn{display:inline-flex!important;align-items:center;justify-content:center;background:#fff4c7!important;border:1px solid #eadb8c!important;border-radius:8px!important;color:#6b5f25!important;font-weight:700!important;flex:0 0 auto}.footer-actions{flex-wrap:nowrap!important}.mobile-sticky-btn:hover{background:#ffefb0!important}}
+@media(max-width:999px){.mobile-sticky-btn{display:inline-flex!important;align-items:center;justify-content:center;background:#fff4c7!important;border:1px solid #eadb8c!important;border-radius:8px!important;color:#6b5f25!important;font-weight:700!important;flex:0 0 auto}.footer-actions{flex-wrap:wrap!important}.mobile-sticky-btn:hover{background:#ffefb0!important}}
 </style>
 </head>
 <body>
@@ -172,7 +172,7 @@ const LEGACY_STICKY_NOTE_KEY='worktasks:sticky-note';
 const STICKY_NOTE_COLLAPSED_KEY='worktasks:sticky-note-collapsed';
 let stickySaveTimer=null;
 function refreshStickyEditors(){const text=$('stickyNoteText'),mobileText=$('mobileStickyText'),value=app.stickyNote||'';if(text&&text.value!==value)text.value=value;if(mobileText&&mobileText.value!==value)mobileText.value=value}
-function saveSticky(value){app.stickyNote=value;refreshStickyEditors();clearTimeout(stickySaveTimer);stickySaveTimer=setTimeout(()=>persist(),500)}
+function saveSticky(value){app.stickyNote=value;refreshStickyEditors();persist()}
 function initStickyNote(){const panel=$('stickyNotePanel'),toggle=$('stickyNoteToggle'),text=$('stickyNoteText'),status=$('stickyNoteStatus'),mobileText=$('mobileStickyText'),mobileButton=$('mobileStickyBtn'),mobileDone=$('mobileStickyDoneBtn');const legacy=localStorage.getItem(LEGACY_STICKY_NOTE_KEY);if(!app.stickyNote&&legacy){app.stickyNote=legacy;persist();localStorage.removeItem(LEGACY_STICKY_NOTE_KEY)}refreshStickyEditors();if(panel&&toggle&&text){const applyState=()=>{const collapsed=panel.classList.contains('collapsed');toggle.textContent=collapsed?'‹':'›';toggle.setAttribute('aria-label',collapsed?'Expand sticky note':'Collapse sticky note');toggle.title=collapsed?'Expand sticky note':'Collapse sticky note'};if(localStorage.getItem(STICKY_NOTE_COLLAPSED_KEY)==='true')panel.classList.add('collapsed');applyState();toggle.onclick=()=>{panel.classList.toggle('collapsed');localStorage.setItem(STICKY_NOTE_COLLAPSED_KEY,String(panel.classList.contains('collapsed')));applyState();if(!panel.classList.contains('collapsed'))text.focus()};text.oninput=()=>{saveSticky(text.value);if(status)status.textContent='Saved locally'}}if(mobileText)mobileText.oninput=()=>saveSticky(mobileText.value);if(mobileButton)mobileButton.onclick=()=>{refreshStickyEditors();openModal('mobileStickyModal');setTimeout(()=>mobileText&&mobileText.focus(),0)};if(mobileDone)mobileDone.onclick=()=>{if(mobileText)saveSticky(mobileText.value);closeModal('mobileStickyModal')}}
 initStickyNote();
 })();
