@@ -121,10 +121,10 @@ body{padding-right:284px}
 /* Compact requestor and task-summary capture */
 .task-title-entry{display:grid;grid-template-columns:minmax(100px,.38fr) minmax(0,1fr);gap:7px;align-items:end}
 .task-title{display:flex;align-items:baseline;gap:5px;min-width:0;white-space:nowrap;overflow:hidden}
-.task-title-requestor{flex:0 1 auto;max-width:38%;overflow:hidden;text-overflow:ellipsis;color:#596057;font-weight:750}
+.task-title-requestor{flex:0 0 auto;max-width:38%;overflow:hidden;text-overflow:ellipsis;color:#596057;font-weight:750;background:var(--entry);border:1px solid var(--entry-border);border-radius:6px;padding:1px 6px;line-height:1.35}
 .task-title-separator{flex:0 0 auto;color:#a3aaa1;font-weight:500}
 .task-title-summary{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:759px){.task-title-entry{grid-template-columns:minmax(88px,.36fr) minmax(0,1fr);gap:5px}.task-title-requestor{max-width:42%}}
+@media(max-width:759px){.task-title-entry{grid-template-columns:minmax(88px,.36fr) minmax(0,1fr);gap:5px}.task-title-requestor{max-width:42%;padding:1px 5px}}
 </style>
 </head>
 <body>
