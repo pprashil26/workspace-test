@@ -138,10 +138,9 @@ body{padding-right:284px}
 .group-viewbar{display:flex;align-items:center;gap:3px;min-height:25px;margin:0 0 6px;padding:2px 0;border-bottom:1px solid var(--line)}.group-view-context{color:var(--muted);font-size:9px;font-weight:750;margin-right:2px}.list-total-count{margin-left:3px;color:#a3aaa1;font-size:9px;font-weight:600}.group-view-btn,.group-action-btn{min-height:23px;padding:2px 6px;border:0;border-radius:6px;background:transparent;color:#8f968d;font-size:10px}.group-view-btn.active{background:var(--selected);color:var(--ink);font-weight:750}.group-bulk-actions{display:flex;align-items:center;gap:2px;margin-left:auto}.group-action-btn{color:var(--muted)}.group-action-btn:hover{background:var(--soft);color:var(--ink)}.note-group-section{display:grid;gap:3px}.note-group-section+.note-group-section{margin-top:6px}.note-group-items{display:grid;gap:3px}
 @media(max-width:759px){.group-viewbar{min-height:32px}.group-view-btn,.group-action-btn{min-height:30px;padding:4px 7px}}
 
-/* Subtle Next Action emphasis */
-.task-next{display:block;width:max-content;max-width:100%;margin-top:2px;padding:1px 6px;border:1px solid #d7e7db;border-radius:6px;background:#eef7f0;color:#3d5a48;font-size:10px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.task-card.done .task-next{background:#f3f5f3;border-color:#e2e6e2;color:#8a9188}
-@media(max-width:759px){.task-next{padding:2px 6px;font-size:10px}}
+/* Next Action visible emphasis */
+.task-card .task-main .task-next{display:block!important;width:100%!important;max-width:100%!important;margin:3px 0 1px!important;padding:2px 7px!important;border:1px solid #c9dfcf!important;border-radius:6px!important;background-color:#e4f3e8!important;color:#31533d!important;font-size:10px!important;font-weight:650!important;line-height:1.4!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.task-card.done .task-main .task-next{border-color:#e0e5e0!important;background-color:#f1f4f1!important;color:#858d85!important}
 </style>
 </head>
 <body>
