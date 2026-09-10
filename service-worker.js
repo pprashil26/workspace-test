@@ -1,5 +1,6 @@
-const CACHE_NAME="workspace-shell-v17";
-const APP_SHELL=["./","./index-pill-global-search-calendar-v3-task-groups-v1-17-clickable-links.html","./manifest.webmanifest"];
+const CACHE_NAME="workspace-shell-v18";
+const APP_SHELL=["./","./index-pill-global-search-calendar-v3-task-groups-v1-18-inline-links-corrected.html
+","./manifest.webmanifest"];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_SHELL)))});
 self.addEventListener("message",event=>{if(event.data&&event.data.type==="SKIP_WAITING")self.skipWaiting()});
 self.addEventListener("activate",event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith("workspace-shell-")&&key!==CACHE_NAME).map(key=>caches.delete(key)))),self.clients.claim()]))});
