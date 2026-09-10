@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Workspace</title>
 <meta name="description" content="A simple local-first work task and linked notes app.">
 <meta name="theme-color" content="#f6f7f5">
@@ -185,6 +185,11 @@ body{padding-right:284px}
 .update-banner{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));z-index:300;display:none;align-items:center;gap:10px;width:min(420px,calc(100vw - 20px));padding:8px 10px;border:1px solid #9bb6a7;border-radius:12px;background:#eef7f1;box-shadow:0 10px 30px rgba(35,45,38,.18);transform:translateX(-50%);color:#315445;font-size:12px;font-weight:700}.update-banner.visible{display:flex}.update-banner span{flex:1}.update-banner button{min-height:30px;border:1px solid #7fa28e;border-radius:8px;background:#fff;color:#315445;padding:4px 10px;font-weight:750}
 /* Inline clickable URLs */
 .auto-link{color:#245f8f;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;overflow-wrap:anywhere}.auto-link:hover{color:#17486e}.inline-link-view{width:100%;min-height:88px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px 10px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45;cursor:text}.note-link-view{min-height:320px;line-height:26px;background-color:#fff;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 25px,rgba(160,145,120,.18) 26px)}@media(max-width:759px){.inline-link-view{min-height:96px;font-size:16px}.note-link-view{min-height:48dvh}}
+
+/* Mobile: prevent focus zoom and manual page zoom */
+@media(max-width:759px){
+input,textarea,select,.field{font-size:16px!important}
+}
 </style>
 </head>
 <body>
